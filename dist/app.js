@@ -1,7 +1,7 @@
 'use strict';
 // Add verified portfolio media here when supplied. Artwork is illustrative.
 const collections = [
-  {id:'cinematography',name:'Timi Called the Shots',title:'TIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'hero',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:null},
+  {id:'cinematography',name:'Cimi Called the Shots',title:'CIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'hero',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:null},
   {id:'direction',name:'Director Durotimi',title:'DIRECTOR<br>DUROTIMI',type:'video',craft:'Music video direction',image:'directing',description:'Music video direction for artists with something to say. A visual world built around the music, from concept through the final frame.',video:null},
   {id:'films',name:'Timi Dawodu Films',title:'TIMI DAWODU<br>FILMS',type:'video',craft:'Narrative & documentary',image:'film',description:'The home for narrative films, documentaries and longer-form cinematic storytelling under Timi’s directorial vision.',video:null},
   {id:'photography',name:'Timagery',title:'TIMAGERY',type:'photo',craft:'Photography',image:'photo',description:'Portraits, editorial and artist imagery. Photography built on the belief that a great image tells the story before a single word is read.',video:null},
@@ -14,13 +14,9 @@ const content=document.querySelector('#dialogContent');
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 let lastTrigger=null;
 function render(filter='all'){
-  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<button class="collection-card" data-id="${c.id}" aria-label="Explore ${c.name}, ${c.craft}"><div class="card-art"><img src="assets/${c.image}.jpg" alt="" loading="lazy"><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${c.type==='photo'?'STILLS':'MOTION'}</span><div class="card-title"><small>THE SHORTS PRESENTS</small>${c.title}</div></div><div class="card-info"><span>${c.craft}</span><span aria-hidden="true">${c.type==='photo'?'↗':'▶'}</span></div></button>`).join('');
-  rail.scrollLeft=0;updateArrows();
+  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<button class="collection-card" data-id="${c.id}" aria-label="Explore ${c.name}, ${c.craft}"><div class="card-art"><img src="assets/${c.image}.jpg" alt="" loading="lazy"><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${c.type==='photo'?'STILLS':'MOTION'}</span><div class="card-title"><small>CIMI CALLED THE SHOTS</small>${c.title}</div></div><div class="card-info"><span>${c.craft}</span><span aria-hidden="true">${c.type==='photo'?'↗':'▶'}</span></div></button>`).join('');
+
 }
-function updateArrows(){document.querySelector('#prev').disabled=rail.scrollLeft<4;document.querySelector('#next').disabled=rail.scrollLeft+rail.clientWidth>=rail.scrollWidth-4;}
-rail.addEventListener('scroll',updateArrows,{passive:true});window.addEventListener('resize',updateArrows);
-document.querySelector('#prev').addEventListener('click',()=>rail.scrollBy({left:-rail.clientWidth*.8,behavior:reduced.matches?'instant':'smooth'}));
-document.querySelector('#next').addEventListener('click',()=>rail.scrollBy({left:rail.clientWidth*.8,behavior:reduced.matches?'instant':'smooth'}));
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});render(b.dataset.filter)}));
 function openCollection(id,trigger){
  const c=collections.find(x=>x.id===id);if(!c)return;
@@ -35,13 +31,23 @@ dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoun
 dialog.addEventListener('close',()=>{const v=dialog.querySelector('video');if(v)v.pause();lastTrigger?.focus()});
 const serviceIds=['cinematography','direction','photography','editing'];
 document.querySelectorAll('[data-service]').forEach(b=>b.addEventListener('click',()=>openCollection(serviceIds[Number(b.dataset.service)],b)));
-const scenes=['hero','directing','film'];let sceneTimeout;
-document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>{
- document.querySelectorAll('[data-scene]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});
- const image=document.querySelector('#heroImage');clearTimeout(sceneTimeout);
- if(reduced.matches){image.style.backgroundImage=`url('assets/${scenes[Number(b.dataset.scene)]}.jpg')`;return}
- image.style.opacity='.3';sceneTimeout=setTimeout(()=>{image.style.backgroundImage=`url('assets/${scenes[Number(b.dataset.scene)]}.jpg')`;image.style.opacity='1'},180);
-}));
+let currentScene=0;
+let sceneTimeout;
+const heroThumbs=document.querySelector('#heroThumbnails');
+heroThumbs.innerHTML=collections.map((c,i)=>`<button data-scene="${i}" class="hero-thumb ${i===0?'selected':''}" aria-pressed="${i===0}" aria-label="Feature ${c.name}"><img src="assets/${c.image}.jpg" alt=""><span>${String(i+1).padStart(2,'0')}</span></button>`).join('');
+function selectScene(index){
+ currentScene=index;
+ const c=collections[index];
+ heroThumbs.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('selected',i===index);b.setAttribute('aria-pressed',String(i===index))});
+ const image=document.querySelector('#heroImage'),copy=document.querySelector('#heroContent');
+ clearTimeout(sceneTimeout);
+ const update=()=>{image.style.backgroundImage=`url('assets/${c.image}.jpg')`;document.querySelector('#heroTitle').innerHTML=c.title;document.querySelector('#heroKicker').textContent=c.craft;document.querySelector('#heroDescription').textContent=c.description;image.style.opacity='1';copy.style.opacity='1';};
+ if(reduced.matches){update();return}
+ image.style.opacity='.25';copy.style.opacity='0';sceneTimeout=setTimeout(update,200);
+}
+heroThumbs.addEventListener('click',e=>{const b=e.target.closest('[data-scene]');if(b)selectScene(Number(b.dataset.scene))});
+heroThumbs.addEventListener('keydown',e=>{if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let i=currentScene;if(e.key==='Home')i=0;else if(e.key==='End')i=collections.length-1;else i=(i+(['ArrowDown','ArrowRight'].includes(e.key)?1:-1)+collections.length)%collections.length;selectScene(i);heroThumbs.querySelectorAll('button')[i].focus()});
+document.querySelector('#heroOpen').addEventListener('click',e=>openCollection(collections[currentScene].id,e.currentTarget));
 const menu=document.querySelector('.menu-toggle');menu.addEventListener('click',()=>{const open=document.querySelector('#nav').classList.toggle('mobile-nav-open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');menu.textContent=open?'✕':'☰'});
 document.querySelectorAll('.nav nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('#nav').classList.remove('mobile-nav-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.textContent='☰'}));
 document.querySelector('#year').textContent=new Date().getFullYear();render();
