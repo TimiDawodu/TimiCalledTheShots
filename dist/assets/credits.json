@@ -1,0 +1,32 @@
+{
+  "hero": {
+    "label": "Moonlight · Barry Jenkins · A24",
+    "url": "https://a24films.com/films/moonlight",
+    "kind": "FILM REFERENCE"
+  },
+  "directing": {
+    "label": "Waves · Trey Edward Shults · A24",
+    "url": "https://a24films.com/films/waves",
+    "kind": "FILM REFERENCE"
+  },
+  "film": {
+    "label": "The Green Knight · David Lowery · A24",
+    "url": "https://a24films.com/films/the-green-knight",
+    "kind": "FILM REFERENCE"
+  },
+  "edit": {
+    "label": "The Last Black Man in San Francisco · Joe Talbot · A24",
+    "url": "https://a24films.com/films/the-last-black-man-in-san-francisco",
+    "kind": "FILM REFERENCE"
+  },
+  "photo": {
+    "label": "Stephen Tettey Atsu · Tema, Ghana · Unsplash",
+    "url": "https://unsplash.com/photos/a-woman-with-braids-and-a-white-shirt-rltN2NMmAdI",
+    "kind": "PHOTO REFERENCE"
+  },
+  "mobile": {
+    "label": "Stephen Tettey Atsu · Tema, Ghana · Unsplash",
+    "url": "https://unsplash.com/photos/a-woman-wearing-a-colorful-dress-and-a-head-scarf-3YrGQ9W2sh0",
+    "kind": "PHOTO REFERENCE"
+  }
+}
