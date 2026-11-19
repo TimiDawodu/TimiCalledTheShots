@@ -1,7 +1,7 @@
 'use strict';
 // Add verified portfolio media here when supplied. Artwork is illustrative.
 const collections = [
-  {id:'cinematography',name:'Timi Called The Shots',title:'TIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'cinematography-video',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:{"provider": "vimeo", "id": "1248497155", "previewStart": 0.1, "previewEnd": 23, "title": "IMG_2215", "url": "https://vimeo.com/1248497155"}},
+  {id:'cinematography',name:'Timi Called The Shots',title:'TIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'cinematography-video',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:{"provider": "vimeo", "id": "1248496671", "previewStart": 0.1, "previewEnd": 824, "title": "Timeline 1", "url": "https://vimeo.com/1248496671"}},
   {id:'direction',name:'Director Durotimi',title:'DIRECTOR<br>DUROTIMI',type:'video',craft:'Music video direction',image:'direction-video',description:'Music video direction for artists with something to say. A visual world built around the music, from concept through the final frame.',video:{provider:'vimeo',id:'1248392519',previewStart:0.1,previewEnd:60,title:'ads',url:'https://vimeo.com/1248392519'}},
   {id:'films',name:'Timi Dawodu Films',title:'TIMI DAWODU<br>FILMS',type:'video',craft:'Narrative & documentary',image:'films-video',description:'The home for narrative films, documentaries and longer-form cinematic storytelling under Timi’s directorial vision.',video:{provider:'vimeo',id:'1248401212',previewZoom:1.4,previewStart:0.1,previewEnd:65,title:'123',url:'https://vimeo.com/1248401212'}},
   {id:'photography',name:'Timagery',title:'TIMAGERY',type:'photo',craft:'Photography',image:'photo',description:'Portraits, editorial and artist imagery. Photography built on the belief that a great image tells the story before a single word is read.',video:null},
@@ -12,7 +12,7 @@ const imageCredits={"hero": {"label": "Moonlight · Barry Jenkins · A24", "url"
 imageCredits['direction-video']={label:'ads · Oluwadurotimi Dawodu · Vimeo',url:'https://vimeo.com/1248392519',kind:'FEATURED VIDEO'};
 imageCredits['films-video']={label:'123 · Oluwadurotimi Dawodu · Vimeo',url:'https://vimeo.com/1248401212',kind:'FEATURED VIDEO'};
 imageCredits['editing-video']={"label": "13880890_1920_1080_25fps \u00b7 Oluwadurotimi Dawodu \u00b7 Vimeo", "url": "https://vimeo.com/1248401213", "kind": "FEATURED VIDEO"};
-imageCredits['cinematography-video']={"label": "IMG_2215 \u00b7 Oluwadurotimi Dawodu \u00b7 Vimeo", "url": "https://vimeo.com/1248497155", "kind": "FEATURED VIDEO"};
+imageCredits['cinematography-video']={"label": "Timeline 1 \u00b7 Oluwadurotimi Dawodu \u00b7 Vimeo", "url": "https://vimeo.com/1248496671", "kind": "FEATURED VIDEO"};
 const rail=document.querySelector('#collectionRail');
 const dialog=document.querySelector('#projectDialog');
 const content=document.querySelector('#dialogContent');
