@@ -3,7 +3,7 @@
 const VideoPreviews=(()=>{
  const entries=new Map(),pendingRoots=new Set();let suspended=false,activeHero='direction';
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
- function markup(video,kind){return `<iframe class="video-preview ${kind}" style="--preview-zoom:${video.previewZoom??1}" data-loop-start="${video.previewStart??0}" data-loop-end="${video.previewEnd??0}" src="https://player.vimeo.com/video/${video.id}?background=1&autoplay=${reduce.matches?0:1}&muted=1&loop=${video.loop?1:0}&autopause=0&playsinline=1&preload=auto&dnt=1#t=${video.previewStart??0}s" title="Muted preview of ${video.title}" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1" aria-hidden="true" loading="eager"></iframe>`;}
+ function markup(video,kind){return `<iframe class="video-preview ${kind}" style="--preview-zoom:${video.previewZoom??1}" data-loop-start="${video.previewStart??0}" data-loop-end="${video.previewEnd??0}" src="https://player.vimeo.com/video/${video.id}?background=1&autoplay=${reduce.matches?0:1}&muted=1&loop=${video.loop?1:0}&autopause=0&playsinline=1&preload=auto&quality=${video.quality??'auto'}&initial_quality=${video.quality??'auto'}&dnt=1#t=${video.previewStart??0}s" title="Muted preview of ${video.title}" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1" aria-hidden="true" loading="eager"></iframe>`;}
  function wanted(entry){return entry.visible&&!entry.paused&&!suspended&&!document.hidden&&(!entry.hero||entry.hero===activeHero)}
  function updateControl(entry){
   if(!entry.control||(entry.hero&&entry.hero!==activeHero))return;
