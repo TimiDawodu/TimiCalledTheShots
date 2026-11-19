@@ -3,7 +3,7 @@
 const collections = [
   {id:'cinematography',name:'Timi Called The Shots',title:'TIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'hero',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:null},
   {id:'direction',name:'Director Durotimi',title:'DIRECTOR<br>DUROTIMI',type:'video',craft:'Music video direction',image:'direction-video',description:'Music video direction for artists with something to say. A visual world built around the music, from concept through the final frame.',video:{provider:'vimeo',id:'1248392519',previewStart:0.1,previewEnd:60,title:'ads',url:'https://vimeo.com/1248392519'}},
-  {id:'films',name:'Timi Dawodu Films',title:'TIMI DAWODU<br>FILMS',type:'video',craft:'Narrative & documentary',image:'films-video',description:'The home for narrative films, documentaries and longer-form cinematic storytelling under Timi’s directorial vision.',video:{provider:'vimeo',id:'1248401212',previewStart:0.1,previewEnd:65,title:'123',url:'https://vimeo.com/1248401212'}},
+  {id:'films',name:'Timi Dawodu Films',title:'TIMI DAWODU<br>FILMS',type:'video',craft:'Narrative & documentary',image:'films-video',description:'The home for narrative films, documentaries and longer-form cinematic storytelling under Timi’s directorial vision.',video:{provider:'vimeo',id:'1248401212',previewZoom:1.4,previewStart:0.1,previewEnd:65,title:'123',url:'https://vimeo.com/1248401212'}},
   {id:'photography',name:'Timagery',title:'TIMAGERY',type:'photo',craft:'Photography',image:'photo',description:'Portraits, editorial and artist imagery. Photography built on the belief that a great image tells the story before a single word is read.',video:null},
   {id:'editing',name:'Timi That Edits',title:'TIMI THAT<br>EDITS',type:'video',craft:'Editing & post-production',image:'edit',description:'The craft of shaping footage into feeling. Editing, rhythm and finishing that give a story its final form.',video:null},
   {id:'mobile',name:'Content By Durotimi',title:'CONTENT BY<br>DUROTIMI',type:'video',craft:'Mobile & social content',image:'mobile',description:'Mobile and social-first event content, built for the way people watch on their phones.',video:null}
@@ -18,7 +18,7 @@ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 let lastTrigger=null;
 function render(filter='all'){
   VideoPreviews.clear(rail);
-  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<article class="collection-card"><div class="card-art"><img src="assets/${c.image}.jpg" alt="" loading="lazy">${c.video?VideoPreviews.markup(c.video,'card-preview'):''}<button class="collection-select" data-id="${c.id}" aria-label="${c.video?'Watch '+c.video.title+' — ': 'Explore '}${c.name}, ${c.craft}"></button><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${imageCredits[c.image].kind}</span><div class="card-title"><small>TIMI CALLED THE SHOTS</small>${c.title}</div></div><div class="card-info"><span>${c.craft}</span><button class="collection-open" data-id="${c.id}" aria-label="Open ${c.name}">${c.type==='photo'?'↗':'▶'}</button></div>${c.video?'<button class="preview-toggle" aria-pressed="false">Pause preview</button>':''}</article>`).join('');
+  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<article class="collection-card" style="--preview-zoom:${c.video?.previewZoom??1}"><div class="card-art"><img src="assets/${c.image}.jpg" alt="" loading="lazy">${c.video?VideoPreviews.markup(c.video,'card-preview'):''}<button class="collection-select" data-id="${c.id}" aria-label="${c.video?'Watch '+c.video.title+' — ': 'Explore '}${c.name}, ${c.craft}"></button><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${imageCredits[c.image].kind}</span><div class="card-title"><small>TIMI CALLED THE SHOTS</small>${c.title}</div></div><div class="card-info"><span>${c.craft}</span><button class="collection-open" data-id="${c.id}" aria-label="Open ${c.name}">${c.type==='photo'?'↗':'▶'}</button></div>${c.video?'<button class="preview-toggle" aria-pressed="false">Pause preview</button>':''}</article>`).join('');
   VideoPreviews.mount(rail);
 }
 
@@ -41,14 +41,14 @@ let currentScene=1;
 let sceneTimeout;
 const heroThumbs=document.querySelector('#heroThumbnails');
 heroThumbs.innerHTML=collections.map((c,i)=>`<button data-scene="${i}" class="hero-thumb ${i===0?'selected':''}" aria-pressed="${i===0}" aria-label="Feature ${c.name}"><img src="assets/${c.image}.jpg" alt=""><span>${String(i+1).padStart(2,'0')}</span></button>`).join('');
-function selectScene(index){
+function selectScene(index,initial=false){
  currentScene=index;
  const c=collections[index];
  heroThumbs.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('selected',i===index);b.setAttribute('aria-pressed',String(i===index))});
  const image=document.querySelector('#heroImage'),copy=document.querySelector('#heroContent');
- clearTimeout(sceneTimeout);VideoPreviews.clear(document.querySelector('#heroVideo'));document.querySelector('#heroVideo').innerHTML='';document.querySelector('#heroPreviewToggle').hidden=true;
- const update=()=>{image.style.backgroundImage=`url('assets/${c.image}.jpg')`;document.querySelector('#heroTitle').innerHTML=c.title;document.querySelector('#heroKicker').textContent=c.craft;document.querySelector('#heroDescription').textContent=c.description;document.querySelector('.preview-label').textContent=imageCredits[c.image].kind+' · '+imageCredits[c.image].label;image.style.opacity='1';copy.style.opacity='1';document.querySelector('#heroOpen').innerHTML=(c.video?'WATCH VIDEO':'EXPLORE COLLECTION')+' <span class="play-icon">▶</span>';if(c.video){document.querySelector('#heroVideo').innerHTML=VideoPreviews.markup(c.video,'hero-preview');document.querySelector('#heroPreviewToggle').hidden=false;VideoPreviews.mount(document.querySelector('.hero'));}};
- if(reduced.matches){update();return}
+ clearTimeout(sceneTimeout);document.querySelector('#heroPreviewToggle').hidden=!c.video;
+ const update=()=>{image.style.backgroundImage=`url('assets/${c.image}.jpg')`;document.querySelector('#heroTitle').innerHTML=c.title;document.querySelector('#heroKicker').textContent=c.craft;document.querySelector('#heroDescription').textContent=c.description;document.querySelector('.preview-label').textContent=imageCredits[c.image].kind+' · '+imageCredits[c.image].label;image.style.opacity='1';copy.style.opacity='1';document.querySelector('#heroOpen').innerHTML=(c.video?'WATCH VIDEO':'EXPLORE COLLECTION')+' <span class="play-icon">▶</span>';document.querySelectorAll('[data-hero-video]').forEach(slide=>slide.classList.toggle('is-active',slide.dataset.heroVideo===c.id));document.querySelector('.hero').classList.toggle('hero-film-crop',c.id==='films');VideoPreviews.activateHero(c.id);};
+ if(reduced.matches||initial){update();return}
  image.style.opacity='.25';copy.style.opacity='0';sceneTimeout=setTimeout(update,200);
 }
 heroThumbs.addEventListener('click',e=>{const b=e.target.closest('[data-scene]');if(b)selectScene(Number(b.dataset.scene))});
@@ -56,4 +56,4 @@ heroThumbs.addEventListener('keydown',e=>{if(!['ArrowUp','ArrowDown','ArrowLeft'
 document.querySelector('#heroOpen').addEventListener('click',e=>openCollection(collections[currentScene].id,e.currentTarget));
 const menu=document.querySelector('.menu-toggle');menu.addEventListener('click',()=>{const open=document.querySelector('#nav').classList.toggle('mobile-nav-open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');menu.textContent=open?'✕':'☰'});
 document.querySelectorAll('.nav nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('#nav').classList.remove('mobile-nav-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.textContent='☰'}));
-document.querySelector('#year').textContent=new Date().getFullYear();render();selectScene(1);
+document.querySelector('#year').textContent=new Date().getFullYear();render();VideoPreviews.mount(document.querySelector('.hero'));selectScene(1,true);
