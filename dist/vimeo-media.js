@@ -3,7 +3,7 @@
 const VideoPreviews=(()=>{
  const entries=new Map();let suspended=false;
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
- function markup(video,kind){return `<iframe class="video-preview ${kind}" data-loop-start="${video.previewStart??0}" data-loop-end="${video.previewEnd??0}" src="https://player.vimeo.com/video/${video.id}?background=1&autoplay=0&muted=1&loop=0&playsinline=1&dnt=1" title="Muted preview of ${video.title}" allow="autoplay; fullscreen; picture-in-picture" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>`;}
+ function markup(video,kind){return `<iframe class="video-preview ${kind}" data-loop-start="${video.previewStart??0}" data-loop-end="${video.previewEnd??0}" src="https://player.vimeo.com/video/${video.id}?background=1&autoplay=0&muted=1&loop=0&autopause=0&playsinline=1&dnt=1" title="Muted preview of ${video.title}" allow="autoplay; fullscreen; picture-in-picture" tabindex="-1" aria-hidden="true" loading="lazy"></iframe>`;}
  function sync(entry){
   entry.player.ready().then(()=>entry.visible&&!entry.paused&&!suspended&&!document.hidden?entry.player.play():entry.player.pause()).catch(()=>{
    entry.frame.classList.remove('is-playing');
