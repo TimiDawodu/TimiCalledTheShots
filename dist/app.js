@@ -1,7 +1,7 @@
 'use strict';
 // Add verified portfolio media here when supplied. Artwork is illustrative.
 const collections = [
-  {id:'cinematography',name:'Cimi Called the Shots',title:'CIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'hero',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:null},
+  {id:'cinematography',name:'Timi Called The Shots',title:'TIMI CALLED<br>THE SHOTS',type:'video',craft:'Cinematography',image:'hero',description:'General cinematography and short-form visual stories. Intentional light, composition and movement, shaped around the story.',video:null},
   {id:'direction',name:'Director Durotimi',title:'DIRECTOR<br>DUROTIMI',type:'video',craft:'Music video direction',image:'directing',description:'Music video direction for artists with something to say. A visual world built around the music, from concept through the final frame.',video:null},
   {id:'films',name:'Timi Dawodu Films',title:'TIMI DAWODU<br>FILMS',type:'video',craft:'Narrative & documentary',image:'film',description:'The home for narrative films, documentaries and longer-form cinematic storytelling under Timi’s directorial vision.',video:null},
   {id:'photography',name:'Timagery',title:'TIMAGERY',type:'photo',craft:'Photography',image:'photo',description:'Portraits, editorial and artist imagery. Photography built on the belief that a great image tells the story before a single word is read.',video:null},
@@ -14,7 +14,7 @@ const content=document.querySelector('#dialogContent');
 const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 let lastTrigger=null;
 function render(filter='all'){
-  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<button class="collection-card" data-id="${c.id}" aria-label="Explore ${c.name}, ${c.craft}"><div class="card-art"><img src="assets/${c.image}.jpg" alt="" loading="lazy"><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${c.type==='photo'?'STILLS':'MOTION'}</span><div class="card-title"><small>CIMI CALLED THE SHOTS</small>${c.title}</div></div><div class="card-info"><span>${c.craft}</span><span aria-hidden="true">${c.type==='photo'?'↗':'▶'}</span></div></button>`).join('');
+  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<button class="collection-card" data-id="${c.id}" aria-label="Explore ${c.name}, ${c.craft}"><div class="card-art"><img src="assets/${c.image}.jpg" alt="" loading="lazy"><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${c.type==='photo'?'STILLS':'MOTION'}</span><div class="card-title"><small>TIMI CALLED THE SHOTS</small>${c.title}</div></div><div class="card-info"><span>${c.craft}</span><span aria-hidden="true">${c.type==='photo'?'↗':'▶'}</span></div></button>`).join('');
 
 }
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});render(b.dataset.filter)}));
