@@ -54,3 +54,61 @@
 }
 .timagery-controls button:hover { background: #ffffff15; }
 .timagery-count { min-width: 3ch; font-variant-numeric: tabular-nums; }
+
+/* Preserve the full framing of each Timagery photograph. */
+.collection-card-timagery .card-art,
+.dialog-art-timagery {
+  background: #101011;
+}
+.collection-card-timagery .card-art > img,
+.collection-card-timagery:hover .card-art > img,
+.dialog-art-timagery img {
+  object-fit: contain;
+  object-position: center;
+  filter: none;
+  transform: none;
+}
+.collection-card-timagery .card-art::after,
+.dialog-art-timagery::after {
+  background: none;
+}
+.dialog-art-timagery {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.dialog-art-timagery h2 {
+  position: static;
+  margin: 0;
+  padding: 12px 24px;
+}
+.hero-timagery .hero-image {
+  inset: 12% 5% 12% 53%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.hero-timagery .hero-shade {
+  background: linear-gradient(0deg, var(--bg), transparent 12%);
+}
+.hero-timagery .hero-content {
+  right: 49%;
+}
+.hero-timagery .hero-content h1 {
+  font-size: clamp(36px, 4.5vw, 90px);
+}
+.contact {
+  background: #c92c25;
+}
+.contact > .eyebrow,
+.contact h2,
+.wordmark {
+  color: #fff;
+}
+@media (max-width: 700px) {
+  .hero-timagery .hero-image {
+    inset: 70px 6% 54%;
+  }
+  .hero-timagery .hero-content {
+    right: 6%;
+  }
+}
