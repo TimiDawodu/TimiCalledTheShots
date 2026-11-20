@@ -19,3 +19,38 @@
 
 /* A charcoal information panel completes each widescreen preview into a single card. */
 .collection-card{background:#1c1d21;border:1px solid #ffffff0e;border-radius:7px;overflow:hidden;box-shadow:0 7px 24px #0002;transition:border-color .2s,transform .2s}.collection-card:hover{border-color:#ffffff29;transform:translateY(-3px)}.collection-card .card-art{border-radius:0}.card-body{aspect-ratio:16/7;min-height:110px;padding:13px 14px 12px;display:flex;flex-direction:column;gap:7px;background:linear-gradient(135deg,#232429,#191a1e)}.collection-card .card-body .card-title{font-size:16px;line-height:1.2;min-height:0;margin:0;color:#eee}.collection-card .card-body .card-info{padding:0;margin-top:auto;gap:8px}.collection-card .card-body .card-info>span{font-size:10px;color:#a6a7ae}.collection-card .card-body .collection-open{background:#ffffff09;border-color:#ffffff25}.collection-card .card-body .preview-toggle{align-self:flex-start;margin:0;padding:0 0 2px;font-size:8px;border-color:#ffffff22;color:#a2a3aa}.collection-card .card-body .preview-toggle:hover{color:white}@media(max-width:700px){.card-body{padding:10px;min-height:96px;gap:6px}.collection-card .card-body .card-title{font-size:12px;line-height:1.25}.collection-card .card-body .card-info>span{font-size:8px}.collection-card .card-body .preview-toggle{font-size:7px}.collection-card:hover{transform:none}}
+
+/* Timagery slideshows */
+.photo-pause {
+  align-self: flex-start;
+  padding: 0 0 2px;
+  background: none;
+  color: #ccc;
+  border-bottom: 1px solid #ffffff40;
+  font-size: 12px;
+}
+.photo-pause:hover { color: white; }
+.photo-pause[hidden] { display: none; }
+.timagery-gallery { margin: 24px 0; }
+.timagery-gallery figure { margin: 0; background: #101011; }
+.timagery-gallery img {
+  height: clamp(260px, 60vh, 600px);
+  object-fit: contain;
+}
+.timagery-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+.timagery-controls button {
+  align-self: auto;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #ffffff40;
+  background: none;
+  font-size: 13px;
+}
+.timagery-controls button:hover { background: #ffffff15; }
+.timagery-count { min-width: 3ch; font-variant-numeric: tabular-nums; }
