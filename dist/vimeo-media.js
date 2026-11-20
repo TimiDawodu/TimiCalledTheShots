@@ -3,7 +3,7 @@
 const VideoPreviews=(()=>{
  const entries=new Map(),pendingRoots=new Set();let suspended=false,activeHero='direction';
  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
- function markup(video,kind){return `<iframe class="video-preview ${kind}" style="--preview-zoom:${video.previewZoom??1}" data-loop-start="${video.previewStart??0}" data-loop-end="${video.previewEnd??0}" src="https://player.vimeo.com/video/${video.id}?background=1&autoplay=${reduce.matches?0:1}&muted=1&loop=${video.loop?1:0}&autopause=0&playsinline=1&preload=auto&quality=${video.quality??'auto'}&initial_quality=${video.quality??'auto'}&dnt=1#t=${video.previewStart??0}s" title="Muted preview of ${video.title}" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1" aria-hidden="true" loading="eager"></iframe>`;}
+ function markup(video,kind,{defer=false}={}){return `<iframe class="video-preview ${kind}" style="--preview-zoom:${video.previewZoom??1}" data-loop-start="${video.previewStart??0}" data-loop-end="${video.previewEnd??0}" src="https://player.vimeo.com/video/${video.id}?background=1&autoplay=${reduce.matches||defer?0:1}&muted=1&loop=${video.loop?1:0}&autopause=0&playsinline=1&preload=auto&quality=${video.quality??'auto'}&initial_quality=${video.quality??'auto'}&dnt=1#t=${video.previewStart??0}s" title="Muted preview of ${video.title}" allow="autoplay; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" tabindex="-1" aria-hidden="true" loading="${defer?'lazy':'eager'}"></iframe>`;}
  function wanted(entry){return entry.visible&&!entry.paused&&!suspended&&!document.hidden&&(!entry.hero||entry.hero===activeHero)}
  function updateControl(entry){
   if(!entry.control||(entry.hero&&entry.hero!==activeHero))return;
@@ -41,9 +41,9 @@ const VideoPreviews=(()=>{
   pendingRoots.delete(root);
   root.querySelectorAll('.video-preview').forEach(frame=>{
    if(entries.has(frame))return;
-   const holder=frame.closest('.collection-card')||frame.closest('.hero');
+   const holder=frame.closest('.collection-card, .hero, .inline-clip');
    const slide=frame.closest('[data-hero-video]');
-   const target=frame.closest('.card-art')||holder;
+   const target=frame.closest('.card-art, .inline-clip-media')||holder;
    const box=target.getBoundingClientRect();
    const entry={frame,target,hero:slide?.dataset.heroVideo,player:new Vimeo.Player(frame),control:holder?.querySelector('.preview-toggle'),visible:box.bottom>0&&box.top<window.innerHeight,paused:reduce.matches,blocked:false,retries:0,retryTimer:null,request:0,seeking:false,start:Number(frame.dataset.loopStart)||0,end:Number(frame.dataset.loopEnd)||0};
    entries.set(frame,entry);updateControl(entry);
@@ -69,6 +69,6 @@ const VideoPreviews=(()=>{
  document.addEventListener('visibilitychange',()=>entries.forEach(sync));
  const sdk=document.querySelector('#vimeoSdk');
  sdk?.addEventListener('load',()=>Array.from(pendingRoots).forEach(mount));
- sdk?.addEventListener('error',()=>pendingRoots.forEach(root=>root.querySelectorAll('.preview-toggle').forEach(control=>{control.textContent='Open video to watch';control.onclick=()=>root.querySelector('[data-id],#heroOpen')?.click()})));
+ sdk?.addEventListener('error',()=>pendingRoots.forEach(root=>root.querySelectorAll('.preview-toggle').forEach(control=>{control.textContent='Open video to watch';control.onclick=()=>(control.closest('.inline-clip')?.querySelector('[data-clip-open]')??root.querySelector('[data-id],#heroOpen'))?.click()})));
  return {markup,mount,clear,suspend,activateHero};
 })();
