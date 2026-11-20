@@ -6,13 +6,14 @@ const collections = [
   {id:'films',name:'Timi Dawodu Films',title:'TIMI DAWODU<br>FILMS',type:'video',craft:'Narrative & documentary',image:'films-video',description:'The home for narrative films, documentaries and longer-form cinematic storytelling under Timi’s directorial vision.',video:{provider:'vimeo',id:'1248401212',previewZoom:1.4,previewStart:0.1,previewEnd:65,title:'123',url:'https://vimeo.com/1248401212'}},
   {id:'photography',name:'Timagery',title:'TIMAGERY',type:'photo',craft:'Photography',image:'timagery',description:'Portraits, editorial and artist imagery. Photography built on the belief that a great image tells the story before a single word is read.',video:null},
   {id:'editing',name:'Timi That Edits',title:'TIMI THAT<br>EDITS',type:'video',craft:'Editing & post-production',image:'editing-video',description:'The craft of shaping footage into feeling. Editing, rhythm and finishing that give a story its final form.',video:{"provider": "vimeo", "id": "1248401213", "previewStart": 0.1, "previewEnd": 26, "title": "13880890_1920_1080_25fps", "url": "https://vimeo.com/1248401213"}},
-  {id:'mobile',name:'Content By Durotimi',title:'CONTENT BY<br>DUROTIMI',type:'video',craft:'Mobile & social content',image:'mobile',description:'Mobile and social-first event content, built for the way people watch on their phones.',video:null}
+  {id:'mobile',name:'Content By Durotimi',title:'CONTENT BY<br>DUROTIMI',type:'video',craft:'Mobile & social content',image:'mobile-video',description:'Mobile and social-first event content, built for the way people watch on their phones.',video:{provider:'vimeo',id:'1248815397',loop:true,title:'Mobile and social video',url:'https://vimeo.com/1248815397'}}
 ];
 const imageCredits={"hero": {"label": "Moonlight · Barry Jenkins · A24", "url": "https://a24films.com/films/moonlight", "kind": "FILM REFERENCE"}, "directing": {"label": "Waves · Trey Edward Shults · A24", "url": "https://a24films.com/films/waves", "kind": "FILM REFERENCE"}, "film": {"label": "The Green Knight · David Lowery · A24", "url": "https://a24films.com/films/the-green-knight", "kind": "FILM REFERENCE"}, "edit": {"label": "The Last Black Man in San Francisco · Joe Talbot · A24", "url": "https://a24films.com/films/the-last-black-man-in-san-francisco", "kind": "FILM REFERENCE"}, "mobile": {"label": "Stephen Tettey Atsu · Tema, Ghana · Unsplash", "url": "https://unsplash.com/photos/a-woman-wearing-a-colorful-dress-and-a-head-scarf-3YrGQ9W2sh0", "kind": "PHOTO REFERENCE"}};
 imageCredits['direction-video']={label:'ads · Oluwadurotimi Dawodu · Vimeo',url:'https://vimeo.com/1248392519',kind:'FEATURED VIDEO'};
 imageCredits['films-video']={label:'123 · Oluwadurotimi Dawodu · Vimeo',url:'https://vimeo.com/1248401212',kind:'FEATURED VIDEO'};
 imageCredits['editing-video']={"label": "13880890_1920_1080_25fps \u00b7 Oluwadurotimi Dawodu \u00b7 Vimeo", "url": "https://vimeo.com/1248401213", "kind": "FEATURED VIDEO"};
 imageCredits['cinematography-video']={"label": "Timeline 1 \u00b7 Oluwadurotimi Dawodu \u00b7 Vimeo", "url": "https://vimeo.com/1248496671", "kind": "FEATURED VIDEO"};
+imageCredits['mobile-video']={label:'Content By Durotimi · Vimeo',url:'https://vimeo.com/1248815397',kind:'FEATURED VIDEO'};
 imageCredits.timagery={label:'Timagery',kind:'PHOTOGRAPHY'};
 const timageryPhotos=[
   {src:'assets/timagery-1.jpg',alt:'Portrait framed by a heart of flames'},
@@ -141,4 +142,9 @@ const menu=document.querySelector('.menu-toggle');menu.addEventListener('click',
 document.querySelectorAll('.nav nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('#nav').classList.remove('mobile-nav-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.textContent='☰'}));
 document.querySelector('#year').textContent=new Date().getFullYear();
 timageryPhotos.forEach(({src})=>{new Image().src=src});
-render();VideoPreviews.mount(document.querySelector('.hero'));selectScene(1,true);
+const mobileVideo=collections.find(c=>c.id==='mobile').video;
+document.querySelector('#heroVideo').insertAdjacentHTML('beforeend',
+  `<div class="hero-video-slide" data-hero-video="mobile">${VideoPreviews.markup(mobileVideo,'hero-preview')}</div>`);
+render();
+VideoPreviews.mount(hero);
+selectScene(1,true);
