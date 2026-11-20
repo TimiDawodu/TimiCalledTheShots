@@ -112,3 +112,15 @@
     right: 6%;
   }
 }
+
+.about-art img {
+  object-position: center 65%;
+}
+.header-logo {
+  display: block;
+  flex: 0 0 auto;
+  width: clamp(100px, 10vw, 144px);
+}
+.header-logo img {
+  height: auto;
+}
