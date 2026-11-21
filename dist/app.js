@@ -78,7 +78,7 @@ function render(filter='all'){
   stopCardSlideshow?.();
   stopCardSlideshow=undefined;
   VideoPreviews.clear(rail);
-  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter||c.id===filter||(filter==='events'&&c.id==='mobile')).map(c=>`<article class="collection-card${c.id==='photography'?' collection-card-timagery':''}" style="--preview-zoom:${c.video?.previewZoom??1}"><div class="card-art"><img src="${collectionImage(c)}" alt="" loading="lazy">${c.video?VideoPreviews.markup(c.video,'card-preview'):''}<button class="collection-select" data-id="${c.id}" aria-label="${c.video?'Watch '+c.video.title+' — ': 'Explore '}${c.name}, ${c.craft}"></button><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${imageCredits[c.image].kind}</span></div><div class="card-body"><h3 class="card-title">${c.title.replace(/<br>/g,' ')}</h3><div class="card-info"><span>${c.craft}</span><button class="collection-open" data-id="${c.id}" aria-label="${c.action}">${c.type==='photo'?'↗':'▶'}</button></div>${c.video?'<button class="preview-toggle" aria-pressed="false">Pause preview</button>':c.id==='photography'?photoPauseButton:''}</div></article>`).join('');
+  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter||c.id===filter||(filter==='events'&&c.id==='mobile')).map(c=>`<article class="collection-card${c.id==='photography'?' collection-card-timagery':''}" style="--preview-zoom:${c.video?.previewZoom??1}"><div class="card-art"><img src="${collectionImage(c)}" alt="" loading="lazy">${c.video?VideoPreviews.markup(c.video,'card-preview',{defer:true}):''}<button class="collection-select" data-id="${c.id}" aria-label="${c.video?'Watch '+c.video.title+' — ': 'Explore '}${c.name}, ${c.craft}"></button><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${imageCredits[c.image].kind}</span></div><div class="card-body"><h3 class="card-title">${c.title.replace(/<br>/g,' ')}</h3><div class="card-info"><span>${c.craft}</span><button class="collection-open" data-id="${c.id}" aria-label="${c.action}">${c.type==='photo'?'↗':'▶'}</button></div>${c.video?'<button class="preview-toggle" aria-pressed="false">Pause preview</button>':c.id==='photography'?photoPauseButton:''}</div></article>`).join('');
   VideoPreviews.mount(rail);
   const photoCard=rail.querySelector('[data-photo-pause]')?.closest('.collection-card');
   if(photoCard){
@@ -151,7 +151,7 @@ let sceneTimeout;
 const hero=document.querySelector('.hero');
 const heroPhotoPause=document.querySelector('#heroPhotoPause');
 const heroThumbs=document.querySelector('#heroThumbnails');
-heroThumbs.innerHTML=collections.map((c,i)=>`<button data-scene="${i}" class="hero-thumb ${i===currentScene?'selected':''}" aria-pressed="${i===currentScene}" aria-label="Feature ${c.name}"><img src="${collectionImage(c)}" alt=""><span>${String(i+1).padStart(2,'0')}</span></button>`).join('');
+heroThumbs.innerHTML=collections.map((c,i)=>`<button data-scene="${i}" class="hero-thumb ${i===currentScene?'selected':''}" aria-pressed="${i===currentScene}" aria-label="Feature ${c.name}" title="${c.name}"><img src="${collectionImage(c)}" alt=""><span>${String(i+1).padStart(2,'0')}</span></button>`).join('');
 function selectScene(index,initial=false){
  currentScene=index;
  const c=collections[index];
@@ -179,8 +179,22 @@ function selectScene(index,initial=false){
 heroThumbs.addEventListener('click',e=>{const b=e.target.closest('[data-scene]');if(b)selectScene(Number(b.dataset.scene))});
 heroThumbs.addEventListener('keydown',e=>{if(!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let i=currentScene;if(e.key==='Home')i=0;else if(e.key==='End')i=collections.length-1;else if(i<0)i=['ArrowDown','ArrowRight'].includes(e.key)?0:collections.length-1;else i=(i+(['ArrowDown','ArrowRight'].includes(e.key)?1:-1)+collections.length)%collections.length;selectScene(i);heroThumbs.querySelectorAll('button')[i].focus()});
 document.querySelector('#heroOpen').addEventListener('click',e=>{if(currentScene<0)document.querySelector('#collections').scrollIntoView();else openCollection(collections[currentScene].id,e.currentTarget)});
-const menu=document.querySelector('.menu-toggle');menu.addEventListener('click',()=>{const open=document.querySelector('#nav').classList.toggle('mobile-nav-open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');menu.textContent=open?'✕':'☰'});
-document.querySelectorAll('.nav nav a').forEach(a=>a.addEventListener('click',()=>{document.querySelector('#nav').classList.remove('mobile-nav-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.textContent='☰'}));
+const menu=document.querySelector('.menu-toggle');
+const nav=document.querySelector('#nav');
+function setMenu(open){
+ nav.classList.toggle('mobile-nav-open',open);
+ menu.setAttribute('aria-expanded',String(open));
+ menu.setAttribute('aria-label',open?'Close navigation':'Open navigation');
+ menu.textContent=open?'✕':'☰';
+}
+menu.addEventListener('click',()=>setMenu(menu.getAttribute('aria-expanded')!=='true'));
+nav.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+nav.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){
+   setMenu(false);
+   menu.focus();
+ }
+});
 document.querySelector('#year').textContent=new Date().getFullYear();
 timageryPhotos.forEach(({src})=>{new Image().src=src});
 const mobileVideo=collections.find(c=>c.id==='mobile').video;
