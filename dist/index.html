@@ -33,14 +33,10 @@
 </section>
 <section class="collections section" id="collections">
   <div class="section-head"><div><div class="eyebrow muted">MY CREATIVE WORLD</div><h2>What I shoot, direct and make.</h2></div><span class="collection-count">06 COLLECTIONS</span></div>
-  <div class="filter-bar" role="group" aria-label="Filter collections"><button class="selected" data-filter="all" aria-pressed="true">All collections</button><button data-filter="video" aria-pressed="false">Motion</button><button data-filter="photo" aria-pressed="false">Photography</button><span>SELECT A COLLECTION TO EXPLORE</span></div>
+  <div class="filter-bar" role="group" aria-label="Filter collections"><button type="button" data-filter="all" aria-pressed="true" class="selected">All collections</button><button type="button" data-filter="video" aria-pressed="false">Motion</button><button type="button" data-filter="cinematography" aria-pressed="false">Cinematography</button><button type="button" data-filter="direction" aria-pressed="false">Music video direction</button><button type="button" data-filter="films" aria-pressed="false">Film</button><button type="button" data-filter="photo" aria-pressed="false">Photography</button><button type="button" data-filter="editing" aria-pressed="false">Editing</button><button type="button" data-filter="mobile" aria-pressed="false">Mobile content creation</button><button type="button" data-filter="events" aria-pressed="false">Events</button></div>
+  <div class="filter-bar event-filters" role="group" aria-label="Filter events" hidden><button type="button" data-event-filter="all-events" aria-pressed="true" class="selected">All events</button><button type="button" data-event-filter="corporate" aria-pressed="false">Corporate</button><button type="button" data-event-filter="weddings" aria-pressed="false">Weddings</button><button type="button" data-event-filter="burials" aria-pressed="false">Burials &amp; memorials</button><button type="button" data-event-filter="birthdays" aria-pressed="false">Birthdays</button></div>
+  <p id="event-filter-description" class="event-filter-description" role="status" hidden></p>
   <div class="collection-rail" id="collectionRail"></div>
-  <div class="work-categories" aria-label="Types of work">
-    <article><h3>Interviews &amp; Podcasts</h3><p>On-camera conversations, video podcasts and interview shoots.</p><a href="/pricing-cinematography.html">View cinematography rates</a></article>
-    <article><h3>Corporate Video</h3><p>Brand films, company profiles and campaign videos.</p><a href="/pricing-cinematography.html">View cinematography rates</a></article>
-    <article><h3>Events</h3><ul><li>Corporate events</li><li>Weddings</li><li>Burials and memorials</li></ul><a href="/pricing-mobile.html">View mobile coverage</a></article>
-    <article><h3>Editing</h3><p>Selected post-production work.</p><a href="/editing.html">Watch my edits</a></article>
-  </div>
 
 </section>
 
@@ -53,9 +49,8 @@
 </section>
 <section class="section inline-showreel" aria-label="Selected work">
  <div class="showreel-line">From the first <span data-inline-video="cinematography"></span> frame</div>
- <div class="showreel-line">to the <span data-inline-video="direction"></span> final <span data-inline-video="editing"></span> cut,</div>
- <div class="showreel-line">I’m your guy.</div>
- <div class="showreel-more"><span data-inline-video="films"></span><span data-inline-video="mobile"></span></div>
+ <div class="showreel-line">to the final <span data-inline-video="direction"></span> cut,</div>
+ <div class="showreel-line">I’m your <span class="showreel-accent">guy</span>.</div>
 </section>
 <section class="section booking-process" id="booking"><h2>From enquiry to final delivery.</h2><ol><li><h3>Tell Me About Your Project</h3><p>Send an enquiry with a description of what you want to create, your objectives, timeline and any available references.</p>
 </li><li><h3>Get a Proposal</h3><p>I'll review the requirements and provide a quotation covering the scope, deliverables, timeline and production costs.</p>

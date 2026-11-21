@@ -78,7 +78,7 @@ function render(filter='all'){
   stopCardSlideshow?.();
   stopCardSlideshow=undefined;
   VideoPreviews.clear(rail);
-  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter).map(c=>`<article class="collection-card${c.id==='photography'?' collection-card-timagery':''}" style="--preview-zoom:${c.video?.previewZoom??1}"><div class="card-art"><img src="${collectionImage(c)}" alt="" loading="lazy">${c.video?VideoPreviews.markup(c.video,'card-preview'):''}<button class="collection-select" data-id="${c.id}" aria-label="${c.video?'Watch '+c.video.title+' — ': 'Explore '}${c.name}, ${c.craft}"></button><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${imageCredits[c.image].kind}</span></div><div class="card-body"><h3 class="card-title">${c.title.replace(/<br>/g,' ')}</h3><div class="card-info"><span>${c.craft}</span><button class="collection-open" data-id="${c.id}" aria-label="${c.action}">${c.type==='photo'?'↗':'▶'}</button></div>${c.video?'<button class="preview-toggle" aria-pressed="false">Pause preview</button>':c.id==='photography'?photoPauseButton:''}</div></article>`).join('');
+  rail.innerHTML=collections.filter(c=>filter==='all'||c.type===filter||c.id===filter||(filter==='events'&&c.id==='mobile')).map(c=>`<article class="collection-card${c.id==='photography'?' collection-card-timagery':''}" style="--preview-zoom:${c.video?.previewZoom??1}"><div class="card-art"><img src="${collectionImage(c)}" alt="" loading="lazy">${c.video?VideoPreviews.markup(c.video,'card-preview'):''}<button class="collection-select" data-id="${c.id}" aria-label="${c.video?'Watch '+c.video.title+' — ': 'Explore '}${c.name}, ${c.craft}"></button><span class="card-no">0${collections.indexOf(c)+1} / COLLECTION</span><span class="card-kind">${imageCredits[c.image].kind}</span></div><div class="card-body"><h3 class="card-title">${c.title.replace(/<br>/g,' ')}</h3><div class="card-info"><span>${c.craft}</span><button class="collection-open" data-id="${c.id}" aria-label="${c.action}">${c.type==='photo'?'↗':'▶'}</button></div>${c.video?'<button class="preview-toggle" aria-pressed="false">Pause preview</button>':c.id==='photography'?photoPauseButton:''}</div></article>`).join('');
   VideoPreviews.mount(rail);
   const photoCard=rail.querySelector('[data-photo-pause]')?.closest('.collection-card');
   if(photoCard){
@@ -89,7 +89,36 @@ function render(filter='all'){
   }
 }
 
-document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('selected',x===b);x.setAttribute('aria-pressed',String(x===b))});render(b.dataset.filter)}));
+const collectionFilters=document.querySelectorAll('[data-filter]');
+const eventFilters=document.querySelector('.event-filters');
+const eventButtons=eventFilters.querySelectorAll('[data-event-filter]');
+const eventDescription=document.querySelector('#event-filter-description');
+const eventLabels={
+  'all-events':'Mobile coverage for corporate events, weddings, burials and memorials, and birthday celebrations.',
+  corporate:'Mobile recaps and behind-the-scenes clips for corporate events.',
+  weddings:'Mobile highlights and behind-the-scenes clips for weddings.',
+  burials:'Discreet mobile coverage for burials and memorials.',
+  birthdays:'Mobile highlights for birthday celebrations.'
+};
+function selectFilter(buttons,selected){
+  buttons.forEach(button=>{
+    button.classList.toggle('selected',button===selected);
+    button.setAttribute('aria-pressed',String(button===selected));
+  });
+}
+function selectEvent(button){
+  selectFilter(eventButtons,button);
+  eventDescription.textContent=eventLabels[button.dataset.eventFilter];
+}
+collectionFilters.forEach(button=>button.addEventListener('click',()=>{
+  selectFilter(collectionFilters,button);
+  const filter=button.dataset.filter;
+  eventFilters.hidden=filter!=='events';
+  eventDescription.hidden=filter!=='events';
+  if(filter==='events')selectEvent(eventButtons[0]);
+  render(filter);
+}));
+eventButtons.forEach(button=>button.addEventListener('click',()=>selectEvent(button)));
 function openCollection(id,trigger){
  const c=collections.find(x=>x.id===id);if(!c)return;
  lastTrigger=trigger;
