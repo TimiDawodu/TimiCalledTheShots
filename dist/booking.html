@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Request a booking with Timi Called the Shots for videography, mobile content, directing, editing, or cinematography.">
+  <title>Book Timi | Timi Called the Shots</title>
+  <link rel="stylesheet" href="/booking.css">
+  <link rel="icon" href="/assets/timi-header-logo.png">
+  <script defer src="/booking.js"></script>
+</head>
+<body class="booking-page">
+  <header class="booking-header">
+    <a href="/" aria-label="Timi Called the Shots"><img src="/assets/timi-header-logo.png" alt="" width="112" height="54"></a>
+    <nav aria-label="Booking navigation"><a href="/#collections">Work</a><a href="/pricing.html">Pricing</a></nav>
+    <a class="booking-phone" href="tel:+2348092323235">Call 08092323235</a>
+  </header>
+  <main class="booking-shell">
+    <a class="booking-back" href="/#contact">Back to the portfolio</a>
+    <h1>Book Timi</h1>
+    <p class="booking-intro">Tell me what you want to make. I’ll review your brief, confirm availability, and send a quote.</p>
+    <form name="booking" method="post" action="/booking-received.html" data-netlify="true" netlify-honeypot="website">
+      <input type="hidden" name="form-name" value="booking">
+      <p hidden><label>Leave this field empty <input name="website" tabindex="-1" autocomplete="off"></label></p>
+      <div class="booking-layout">
+        <div class="booking-fields">
+          <fieldset>
+            <legend>Project details</legend>
+            <label for="service">Type of shoot or service</label>
+            <select id="service" name="service" required>
+              <option value="">Choose a service</option>
+              <option value="videography">Videography &amp; video production</option>
+              <option value="cinematography">Cinematography</option>
+              <option value="direction">Music video direction</option>
+              <option value="films">Film &amp; documentary</option>
+              <option value="editing">Video editing &amp; post-production</option>
+              <option value="mobile">Mobile content creation</option>
+              <option value="photography">Photography</option>
+              <option value="other">Other or multiple services</option>
+            </select>
+            <div class="booking-pair">
+              <div><label for="location">Location <span>optional</span></label><input id="location" name="location" type="text" maxlength="120" placeholder="City, venue, or remote"></div>
+              <div><label for="budget">Estimated budget <span>optional</span></label><input id="budget" name="budget" type="text" maxlength="80" placeholder="e.g. ₦350,000 or $750"></div>
+            </div>
+            <label for="brief">Short project brief</label>
+            <textarea id="brief" name="brief" rows="5" maxlength="600" placeholder="What are you making, and what would you like delivered?" required></textarea>
+          </fieldset>
+          <fieldset>
+            <legend>Your contact details</legend>
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" autocomplete="name" maxlength="100" required>
+            <div class="booking-pair">
+              <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" maxlength="120" required></div>
+              <div><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="35" required></div>
+            </div>
+          </fieldset>
+        </div>
+        <aside class="booking-side" aria-label="Scheduling and next steps">
+          <fieldset class="booking-dates">
+            <legend>Preferred dates</legend>
+            <div class="booking-pair">
+              <div><label for="start-date">Start date</label><input id="start-date" name="start-date" type="date" required></div>
+              <div><label for="end-date">End date <span>optional</span></label><input id="end-date" name="end-date" type="date"></div>
+            </div>
+            <p>For an editing project, choose your preferred start date. For a one-day shoot, leave the end date blank.</p>
+          </fieldset>
+          <div class="booking-note">
+            <h2>How to book</h2>
+            <ol><li>Send your dates and project details.</li><li>I’ll confirm availability, scope, and pricing.</li><li>A 50% deposit secures the booking unless we agree otherwise in writing.</li></ol>
+          </div>
+          <p id="booking-privacy">Your contact details are used to respond to this request. Submitting it does not reserve a date or charge you.</p>
+          <button type="submit" class="booking-submit" aria-describedby="booking-privacy">Send booking request</button>
+          <div id="booking-text-fallback" hidden>
+            <p role="status">Send the prepared request in your messaging app. You can also copy it and send it to <a href="tel:+2348092323235">08092323235</a>.</p>
+            <label for="booking-message">Your prepared request</label>
+            <textarea id="booking-message" rows="5" readonly></textarea>
+            <button type="button" id="copy-booking">Copy request</button>
+            <p id="copy-booking-status" role="status"></p>
+          </div>
+          <noscript><p>Prefer to book by phone? Call <a href="tel:+2348092323235">08092323235</a>.</p></noscript>
+        </aside>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
